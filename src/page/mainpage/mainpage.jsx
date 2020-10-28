@@ -25,7 +25,7 @@ class MainPage extends Component{
 
       
    
-    
+    //putting the contact list on two different arrays for different pages
       componentDidUpdate(){
        let displays;
        let displays2;
@@ -54,7 +54,9 @@ class MainPage extends Component{
         } 
       }
       
-    
+
+
+    // saving input to state and displaying search reasults 
       handleChange = e => {
         this.setState({ searchField: e.target.value });
         const { contacts } = this.props
@@ -64,6 +66,8 @@ class MainPage extends Component{
 
 
       };
+
+      //changes display based on page count
 
       linkClick1 = e =>{
         this.setState({ pages: 1})
@@ -78,6 +82,9 @@ class MainPage extends Component{
 
 
 
+
+
+      // Makes each item in list a button that you can click 
       onSubmit = e => {
 
         const {contacts, setOBJ} = this.props;
@@ -94,22 +101,17 @@ class MainPage extends Component{
       }
 
 
-      handleBack = e => {
-          this.setState({ id: null, name: null, number: null })
-      }
-
-
- 
-
 
     render() {
+
+      //destructuring 
         const {pages, display1, display2, display3, searchField} = this.state;
        const { contacts, obj } = this.props
        
 
 
 
-        
+        //decided to display page one or two 
        if( display1!== null && pages === 1 && searchField === '' && !obj){
         return(
             <div className='main'>
@@ -155,6 +157,13 @@ class MainPage extends Component{
              
             </div>
         );
+
+
+
+                  //deciding to display edit page
+
+
+
       }else if( obj !== undefined){
         return(
           <div>
@@ -162,6 +171,13 @@ class MainPage extends Component{
           <EditPage />
           </div>
         )
+
+
+
+          //deciding to display page two
+
+
+
       }else if(pages === 2 && display2 !== null  && searchField === ''  && !obj){
         return (
           <div className='main'>
@@ -208,6 +224,12 @@ class MainPage extends Component{
                  
             </div>
         )
+
+
+                  //display if searching for somthing 
+
+
+
       }else if(searchField !== '' && contacts !== undefined  && !obj){
         return (
           <div className='main'>
@@ -256,6 +278,11 @@ class MainPage extends Component{
             </div>
         )
       }else {
+
+
+        //basic display if somthing goes wrong
+
+
         return(
             <div className='main'>
             <h1>Contact Libary</h1>
@@ -300,6 +327,9 @@ class MainPage extends Component{
     }
 
 }
+
+
+// map state and dispatch for redux 
 
 const mapStateToProps = ( state ) => {
   
