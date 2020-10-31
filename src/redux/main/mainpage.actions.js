@@ -38,3 +38,8 @@ export const setDis3 = dis3 => ({
   type: MainpageActionTypes.SET_DIS3_TO_DIS3,
   payload: dis3
 })
+
+export const setSel = sel => ({
+  type: MainpageActionTypes.SET_SEL_TO_ID,
+  payload: sel
+})

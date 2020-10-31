@@ -1,24 +1,33 @@
-import React from "react"
+import React, { Component } from "react"
 import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
+import { connect } from 'react-redux';
+import {setSel} from './../redux/main/mainpage.actions'
 
 
-const List = ({ display,  onSubmit, linkClick1, linkClick2}) => {
 
-    // saving input to state and displaying search reasults 
+
+class List extends Component{
+    onClicks = e => {
+        this.props.setSel({sel: e})
+        this.props.onSubmit()
+      }
+    
+    render() {
    
     return(
         <div className='main'>
-       
-        
-        
+
         <ul>
        
-         {display.map(x=>(
+         {this.props.display.map(x=>(
       <li>
-        <Button key={x._id} onClick={() => onSubmit(x.id)}>
+        <Button key={x._id} onClick={() => {
+            this.onClicks(x.id)
+        }}>
           <p className='id'>{x.id}</p> <p className='name'>{x.name}</p> || <p className='number'>{x.number}</p>
         </Button>
+        
       </li>
     ))}
         </ul>
@@ -27,7 +36,7 @@ const List = ({ display,  onSubmit, linkClick1, linkClick2}) => {
         <Link
             component="button"
             variant="body2"
-            onClick={linkClick1}
+            onClick={this.props.linkClick1}
           
         >
           <p className='bl'>1</p>
@@ -36,7 +45,7 @@ const List = ({ display,  onSubmit, linkClick1, linkClick2}) => {
         <Link
             component="button"
             variant="body2"
-            onClick={linkClick2}
+            onClick={this.props.linkClick2}
             
         >
           <p className='bl'>2</p>
@@ -44,8 +53,14 @@ const List = ({ display,  onSubmit, linkClick1, linkClick2}) => {
       </div>
      
     </div>
-    )
+    )}
 }
 
+const mapDispatchToProps = dispatch => ({
+    setSel: id => dispatch(setSel(id)), 
 
-export default List;
+   
+  });
+
+
+export default connect(null, mapDispatchToProps)(List);

@@ -11,6 +11,7 @@ import {setOBJ,
         setDis1, 
         setDis2, 
         setDis3,
+        setSel
          } from './../../redux/main/mainpage.actions'
 import List from './../../components/list.component'
 
@@ -23,7 +24,7 @@ class MainPage extends Component{
    
     //putting the contact list on two different arrays for different pages
       componentDidUpdate(){
-        const { contacts, count, setDis2, setDis1, setCount} = this.props;
+        const { contacts, count, setDis2, setDis1, setCount,} = this.props;
        let displays;
        let displays2;
        
@@ -52,14 +53,15 @@ class MainPage extends Component{
 
 
       componentDidMount(){
-        const{ setCount, setPage, setSearch, setDis1 } = this.props;
+        const{ setCount, setPage, setSearch, setDis1, setSel, setOBJ} = this.props;
 
         setCount({count: 0})
         setPage({ pages: 1})
         setSearch({searchField: '' })
         
-        setDis1({display1: [{name: 'fill', number: 'fill'}]})
-        
+        setDis1({display1: [{name: 'If youre seeing this', number: 'contacts didnt load from database'}]})
+        setSel({sel: 0})
+        setOBJ({id: -1})
         
       }
       
@@ -99,15 +101,18 @@ class MainPage extends Component{
 
       // Makes each item in list a button that you can click 
       onSubmit = e => {
-
-        const {contacts, setOBJ} = this.props;
-
-        setOBJ({ obj: 
-            {id: contacts[e - 1].id,
-             _id: contacts[e - 1]._id, 
-             name: contacts[e - 1].name, 
-             number: contacts[e - 1].number}
+        
+        const {contacts, setOBJ, sel, obj} = this.props;
+        console.log(sel)
+        if(sel<=31 && sel >= 1){
+          setOBJ({ obj: 
+            {id: contacts[sel - 1].id,
+             _id: contacts[sel - 1]._id, 
+             name: contacts[sel - 1].name, 
+             number: contacts[sel - 1].number}
         })
+        console.log(obj)
+        }
         
 
        
@@ -280,7 +285,8 @@ const mapStateToProps = ( state ) => {
     searchField: state.mainpage.searchField.searchField,
     display2: state.mainpage.display2.display2,
     display1: state.mainpage.display1.display1,
-    count: state.mainpage.count.count
+    count: state.mainpage.count.count,
+    sel: state.mainpage.sel.sel
 
 
   })
@@ -295,6 +301,7 @@ const mapDispatchToProps = dispatch => ({
   setDis1: display1 => dispatch(setDis1(display1)),
   setDis2: display2 => dispatch(setDis2(display2)),
   setDis3: display3 => dispatch(setDis3(display3)),
+  setSel: id => dispatch(setSel(id)), 
  
 });
 

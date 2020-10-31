@@ -9,6 +9,7 @@ const INITIAL_STATE = {
     display2: [''],
     display3: [''],
     count: 0,
+    sel: -1
   
 };
   
@@ -53,6 +54,11 @@ const INITIAL_STATE = {
           return{
             ...state,
             display3: action.payload
+          };
+          case MainpageActionTypes.SET_SEL_TO_ID:
+          return{
+            ...state,
+            sel: action.payload
           };
       default:
         return state;
