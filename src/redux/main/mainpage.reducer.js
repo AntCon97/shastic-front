@@ -2,7 +2,13 @@ import { MainpageActionTypes} from './mainpage.types'
 
 const INITIAL_STATE = {
     contacts: [''],
-    obj: {}
+    obj: {},
+    searchField: '',
+    pages: 1,
+    display1: [''],
+    display2: [''],
+    display3: [''],
+    count: 0,
   
 };
   
@@ -17,7 +23,37 @@ const INITIAL_STATE = {
           return{
             ...state,
             obj: action.payload
-          }
+          };
+          case MainpageActionTypes.SET_PAGE_TO_PAGE:
+          return{
+            ...state,
+            pages: action.payload
+          };
+          case MainpageActionTypes.SET_SEARCHFIELD_TO_SEARCHFIELD:
+          return{
+            ...state,
+            searchField: action.payload
+          };
+          case MainpageActionTypes.SET_COUNT_TO_COUNT:
+          return{
+            ...state,
+            count: action.payload
+          };
+          case MainpageActionTypes.SET_DIS1_TO_DIS1:
+          return{
+            ...state,
+            display1: action.payload
+          };
+          case MainpageActionTypes.SET_DIS2_TO_DIS2:
+          return{
+            ...state,
+            display2: action.payload
+          };
+          case MainpageActionTypes.SET_DIS3_TO_DIS3:
+          return{
+            ...state,
+            display3: action.payload
+          };
       default:
         return state;
     }

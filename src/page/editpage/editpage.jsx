@@ -20,15 +20,15 @@ class EditPage extends Component{
             name: '',
             num: '',
             data: {},
-            tf: 0
+            count: 0
 
         }
       }
 
       componentDidUpdate(){
-          const {tf, num, name, } = this.state
-          if(tf < num.length || tf < name.length){
-              this.setState({tf: tf + 1})
+          const {count, num, name, } = this.state
+          if(count < num.length || count < name.length){
+              this.setState({count: count + 1})
         if(name !== ''){
             this.setState({ data: {name: this.state.name}})
         }
@@ -64,7 +64,7 @@ class EditPage extends Component{
 
        
         
-        this.setState({tf: this.state.tf + 1})
+        this.setState({count: this.state.count + 1})
 
      const putMethod = {
           method: 'PUT', 

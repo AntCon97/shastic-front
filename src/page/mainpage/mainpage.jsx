@@ -1,42 +1,37 @@
 import React, { Component } from "react"
 import Input from '@material-ui/core/Input';
 import Link from '@material-ui/core/Link';
-import Button from '@material-ui/core/Button';
+
 import EditPage from './../editpage/editpage'
 import { connect } from 'react-redux';
-import {setOBJ } from './../../redux/main/mainpage.actions'
-
+import {setOBJ, 
+        setPage, 
+        setSearch, 
+        setCount, 
+        setDis1, 
+        setDis2, 
+        setDis3,
+         } from './../../redux/main/mainpage.actions'
+import List from './../../components/list.component'
 
 import './mainpage.css'
 
 class MainPage extends Component{
-    constructor(){
-        super();
-        this.state = {
-         
-          searchField: '',
-          pages: 1,
-          display1: null,
-          display2: null,
-          display3: null,
-          tf: 0,
-        }
-      }
+    
 
       
    
     //putting the contact list on two different arrays for different pages
       componentDidUpdate(){
+        const { contacts, count, setDis2, setDis1, setCount} = this.props;
        let displays;
        let displays2;
        
-         const { contacts} = this.props;
-        
-         const {tf} = this.state;
+      
+              
+          if(contacts !== undefined && contacts.length === 30 && count < 2){
          
-          if(contacts !== undefined && contacts.length === 30 && tf < 2){
-         
-           this.setState({tf: this.state.tf + 1})
+           setCount({count: count + 1})
          
 
             displays =  contacts.filter(function (e) {
@@ -49,34 +44,52 @@ class MainPage extends Component{
                      })
                  
                  
-            this.setState({display1: [ ...displays]})
-            this.setState({display2: [...displays2]})
+            setDis1({display1: [ ...displays]})
+            setDis2({display2: [...displays2]})
+            
         } 
       }
+
+
+      componentDidMount(){
+        const{ setCount, setPage, setSearch, setDis1 } = this.props;
+
+        setCount({count: 0})
+        setPage({ pages: 1})
+        setSearch({searchField: '' })
+        
+        setDis1({display1: [{name: 'fill', number: 'fill'}]})
+        
+        
+      }
+      
       
 
 
     // saving input to state and displaying search reasults 
       handleChange = e => {
-        this.setState({ searchField: e.target.value });
-        const { contacts } = this.props
+        const { contacts, setDis3, setSearch, searchField } = this.props
+        
+         setSearch({ searchField: e.target.value });
 
-          const filtered = contacts.filter(entry => Object.values(entry).some(val => typeof val === "string" && val.includes(this.state.searchField)));
-          this.setState({display3: [ ...filtered]})
-
+          const filtered = contacts.filter(entry => Object.values(entry).some(val => typeof val === "string" && val.includes(searchField)));
+          
+            
+            setDis3({display3: [ ...filtered]})
+      
 
       };
 
       //changes display based on page count
 
       linkClick1 = e =>{
-        this.setState({ pages: 1})
+        this.props.setPage({ pages: 1})
       }
 
 
       linkClick2 = e =>{
         
-        this.setState({ pages: 2})
+        this.props.setPage({ pages: 2})
         
       }
 
@@ -105,57 +118,33 @@ class MainPage extends Component{
     render() {
 
       //destructuring 
-        const {pages, display1, display2, display3, searchField} = this.state;
-       const { contacts, obj } = this.props
+     
+       const { contacts, obj, display1, display2, display3, searchField, pages} = this.props
        
-
-
-
+        
+    
         //decided to display page one or two 
-       if( display1!== null && pages === 1 && searchField === '' && !obj){
+       if( pages === 1 && searchField === '' && !obj ){
         return(
-            <div className='main'>
-                <h1>Contact Libary</h1>
-                <Input 
-                    className='searchBar'
-                    type='search'
-                    placeholder='Name or Number Here'
-                    onChange={this.handleChange}
-                />
-                
-                
-                <ul>
-                <span className='warning'>Search Bar is Case Sensitive</span>
-                 {display1.map(x=>(
-              <li>
-                <Button key={x._id} onClick={() => this.onSubmit(x.id)}>
-                  <p className='id'>{x.id}</p> <p className='name'>{x.name}</p> || <p className='number'>{x.number}</p>
-                </Button>
-              </li>
-            ))}
-                </ul>
-                  
-              <div className='links'>
-                <Link
-                    component="button"
-                    variant="body2"
-                    onClick={this.linkClick1}
-                  
-                >
-                  <p className='bl'>1</p>
-                </Link>
-                |
-                <Link
-                    component="button"
-                    variant="body2"
-                    onClick={this.linkClick2}
+          
+          <div className='main'>
+          <h1>Contact Libary</h1>
+          <Input 
+              className='searchBar'
+              type='search'
+              placeholder='Name or Number Here'
+              onChange={this.handleChange}
+          />
+          
+          
+          
+          <span className='warning'>Search Bar is Case Sensitive</span>
+          <List  display={display1} 
                     
-                >
-                  <p className='bl'>2</p>
-                </Link>
-              </div>
-             
-            </div>
+                  onSubmit={() => this.onSubmit()} 
+                  linkClick1={this.linkClick1} 
+                  linkClick2={this.linkClick2} />
+        </div>
         );
 
 
@@ -181,48 +170,24 @@ class MainPage extends Component{
       }else if(pages === 2 && display2 !== null  && searchField === ''  && !obj){
         return (
           <div className='main'>
-                <h1>Contact Libary</h1>
-                <Input 
-                    className='searchBar'
-                    type='search'
-                    placeholder='Name or Number Here'
-                    onChange={this.handleChange}
-                />
-                
-                
-                <ul>
-                <span className='warning'>Search Bar is Case Sensitive</span>
-                 
-                {display2.map(x=>(
-              <li>
-                <Button key={x._id} onClick={() => this.onSubmit(x.id)}>
-                  <p className='id'>{x.id}</p> <p className='name'>{x.name}</p> || <p className='number'>{x.number}</p>
-                </Button>
-              </li>
-            ))}
-                </ul>
-                  
-              <div className='links'>
-                <Link
-                    component="button"
-                    variant="body2"
-                    onClick={this.linkClick1}
-                  
-                >
-                  <p className='bl'>1</p>
-                </Link>
-                |
-                <Link
-                    component="button"
-                    variant="body2"
-                    onClick={this.linkClick2}
-                    
-                >
-                  <p className='bl'>2</p>
-                </Link>
-              </div>
-                 
-            </div>
+            <h1>Contact Libary</h1>
+            <Input 
+                className='searchBar'
+                type='search'
+                placeholder='Name or Number Here'
+                onChange={this.handleChange}
+            />
+            
+            
+            
+            <span className='warning'>Search Bar is Case Sensitive</span>
+            <List  display={display2} 
+                     
+                    onSubmit={() => this.onSubmit()} 
+                    linkClick1={this.linkClick1} 
+                    linkClick2={this.linkClick2} />
+          </div>
+          
         )
 
 
@@ -230,52 +195,26 @@ class MainPage extends Component{
 
 
 
-      }else if(searchField !== '' && contacts !== undefined  && !obj){
+      }else if(searchField !== '' && contacts !== undefined  && !obj && searchField !== undefined){
         return (
           <div className='main'>
-                <h1>Contact Libary</h1>
-                <Input 
-                    className='searchBar'
-                    type='search'
-                    placeholder='Name or Number Here'
-                    onChange={this.handleChange}
-                />
-                
-                
-                <ul>
-                <span className='warning'>Search Bar is Case Sensitive</span>
-                 
-                {display3.map(x=>(
-              <li>
-                <Button key={x._id} onClick={() => this.onSubmit(x.id)}>
-                  <p className='id'>{x.id}</p> <p className='name'>{x.name}</p> || <p className='number'>{x.number}</p>
-                </Button>
-              </li>
-            ))}
-                
-                </ul>
-                  
-              <div className='links'>
-                <Link
-                    component="button"
-                    variant="body2"
-                    onClick={this.linkClick1}
-                  
-                >
-                  <p className='bl'>1</p>
-                </Link>
-                |
-                <Link
-                    component="button"
-                    variant="body2"
-                    onClick={this.linkClick2}
-                    
-                >
-                  <p className='bl'>2</p>
-                </Link>
-              </div>
-                 
-            </div>
+            <h1>Contact Libary</h1>
+            <Input 
+                className='searchBar'
+                type='search'
+                placeholder='Name or Number Here'
+                onChange={this.handleChange}
+            />
+            
+            
+            
+            <span className='warning'>Search Bar is Case Sensitive</span>
+            <List  display={display3} 
+                     
+                    onSubmit={() => this.onSubmit()} 
+                    linkClick1={this.linkClick1} 
+                    linkClick2={this.linkClick2} />
+          </div>
         )
       }else {
 
@@ -321,7 +260,7 @@ class MainPage extends Component{
           </div>
           
         </div>
-        )
+       )
       }
      
     }
@@ -336,14 +275,27 @@ const mapStateToProps = ( state ) => {
   return({
     contacts: state.mainpage.contacts.contacts,
     obj: state.mainpage.obj.obj,
+    pages: state.mainpage.pages.pages,
+    display3: state.mainpage.display3.display3,
+    searchField: state.mainpage.searchField.searchField,
+    display2: state.mainpage.display2.display2,
+    display1: state.mainpage.display1.display1,
+    count: state.mainpage.count.count
+
+
   })
  
 }
 
 const mapDispatchToProps = dispatch => ({
   setOBJ: obj => dispatch(setOBJ(obj)), 
-   
-
+  setPage: page => dispatch(setPage(page)),
+  setSearch: search => dispatch(setSearch(search)),
+  setCount: count => dispatch(setCount(count)),
+  setDis1: display1 => dispatch(setDis1(display1)),
+  setDis2: display2 => dispatch(setDis2(display2)),
+  setDis3: display3 => dispatch(setDis3(display3)),
+ 
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

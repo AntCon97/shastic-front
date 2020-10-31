@@ -9,5 +9,32 @@ export const setOBJ = obj => ({
   payload: obj
 });
 
+export const setPage = page => ({
+  type: MainpageActionTypes.SET_PAGE_TO_PAGE,
+  payload: page
+})
 
+export const setSearch = search => ({
+  type: MainpageActionTypes.SET_SEARCHFIELD_TO_SEARCHFIELD,
+  payload: search
+})
 
+export const setCount = count => ({
+  type: MainpageActionTypes.SET_COUNT_TO_COUNT,
+  payload: count
+})
+
+export const setDis1 = dis1 => ({
+  type: MainpageActionTypes.SET_DIS1_TO_DIS1,
+  payload: dis1
+})
+
+export const setDis2 = dis2 => ({
+  type: MainpageActionTypes.SET_DIS2_TO_DIS2,
+  payload: dis2
+})
+
+export const setDis3 = dis3 => ({
+  type: MainpageActionTypes.SET_DIS3_TO_DIS3,
+  payload: dis3
+})
