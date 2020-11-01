@@ -1,8 +1,9 @@
 import React, { Component } from "react"
 import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input';
 import { connect } from 'react-redux';
-import {setSel} from './../redux/main/mainpage.actions'
+import {setSel, setDis3, setSearch} from './../redux/main/mainpage.actions'
 
 
 
@@ -12,14 +13,37 @@ class List extends Component{
         this.props.setSel({sel: e})
         this.props.onSubmit()
       }
+      
+      componentDidUpdate(){
+        this.props.onSubmit()
+      }
+          // saving input to state and displaying search reasults 
+          handleChange = e => {
+            const { contacts, setDis3, setSearch, searchField } = this.props
+            
+             setSearch({ searchField: e.target.value });
+    
+              const filtered = contacts.filter(entry => Object.values(entry).some(val => typeof val === "string" && val.includes(searchField)));
+              
+                
+                setDis3({display3: [ ...filtered]})
+    
+          };
     
     render() {
    
     return(
-        <div className='main'>
-
+      <div className='main'>
+      <h1>Contact Libary</h1>
+      <Input 
+          className='searchBar'
+          type='search'
+          placeholder='Name or Number Here'
+          onChange={this.handleChange}
+      />
+      
         <ul>
-       
+        <span className='warning'>Search Bar is Case Sensitive</span>
          {this.props.display.map(x=>(
       <li>
         <Button key={x._id} onClick={() => {
@@ -58,9 +82,22 @@ class List extends Component{
 
 const mapDispatchToProps = dispatch => ({
     setSel: id => dispatch(setSel(id)), 
+    setDis3: display3 => dispatch(setDis3(display3)),
+    setSearch: search => dispatch(setSearch(search)),
+
 
    
   });
 
+  const mapStateToProps = ( state ) => {
+  
+    return({
+      contacts: state.mainpage.contacts.contacts,
+      display3: state.mainpage.display3.display3,
+      searchField: state.mainpage.searchField.searchField,
+    })
+   
+  }
 
-export default connect(null, mapDispatchToProps)(List);
+
+export default connect(mapStateToProps, mapDispatchToProps)(List);

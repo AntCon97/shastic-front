@@ -65,23 +65,6 @@ class MainPage extends Component{
         
       }
       
-      
-
-
-    // saving input to state and displaying search reasults 
-      handleChange = e => {
-        const { contacts, setDis3, setSearch, searchField } = this.props
-        
-         setSearch({ searchField: e.target.value });
-
-          const filtered = contacts.filter(entry => Object.values(entry).some(val => typeof val === "string" && val.includes(searchField)));
-          
-            
-            setDis3({display3: [ ...filtered]})
-      
-
-      };
-
       //changes display based on page count
 
       linkClick1 = e =>{
@@ -95,14 +78,10 @@ class MainPage extends Component{
         
       }
 
-
-
-
-
       // Makes each item in list a button that you can click 
       onSubmit = e => {
         
-        const {contacts, setOBJ, sel, obj} = this.props;
+        const {contacts, setOBJ, sel} = this.props;
         console.log(sel)
         if(sel<=31 && sel >= 1){
           setOBJ({ obj: 
@@ -111,15 +90,10 @@ class MainPage extends Component{
              name: contacts[sel - 1].name, 
              number: contacts[sel - 1].number}
         })
-        console.log(obj)
-        }
-        
-
        
+        }
+      
       }
-
-
-
     render() {
 
       //destructuring 
@@ -132,27 +106,13 @@ class MainPage extends Component{
        if( pages === 1 && searchField === '' && !obj ){
         return(
           
-          <div className='main'>
-          <h1>Contact Libary</h1>
-          <Input 
-              className='searchBar'
-              type='search'
-              placeholder='Name or Number Here'
-              onChange={this.handleChange}
-          />
-          
-          
-          
-          <span className='warning'>Search Bar is Case Sensitive</span>
           <List  display={display1} 
                     
                   onSubmit={() => this.onSubmit()} 
                   linkClick1={this.linkClick1} 
                   linkClick2={this.linkClick2} />
-        </div>
+       
         );
-
-
 
                   //deciding to display edit page
 
@@ -166,33 +126,19 @@ class MainPage extends Component{
           </div>
         )
 
-
-
           //deciding to display page two
 
 
 
       }else if(pages === 2 && display2 !== null  && searchField === ''  && !obj){
         return (
-          <div className='main'>
-            <h1>Contact Libary</h1>
-            <Input 
-                className='searchBar'
-                type='search'
-                placeholder='Name or Number Here'
-                onChange={this.handleChange}
-            />
-            
-            
-            
-            <span className='warning'>Search Bar is Case Sensitive</span>
+
             <List  display={display2} 
                      
                     onSubmit={() => this.onSubmit()} 
                     linkClick1={this.linkClick1} 
                     linkClick2={this.linkClick2} />
-          </div>
-          
+    
         )
 
 
@@ -202,24 +148,13 @@ class MainPage extends Component{
 
       }else if(searchField !== '' && contacts !== undefined  && !obj && searchField !== undefined){
         return (
-          <div className='main'>
-            <h1>Contact Libary</h1>
-            <Input 
-                className='searchBar'
-                type='search'
-                placeholder='Name or Number Here'
-                onChange={this.handleChange}
-            />
-            
-            
-            
-            <span className='warning'>Search Bar is Case Sensitive</span>
+        
             <List  display={display3} 
                      
                     onSubmit={() => this.onSubmit()} 
                     linkClick1={this.linkClick1} 
                     linkClick2={this.linkClick2} />
-          </div>
+        
         )
       }else {
 

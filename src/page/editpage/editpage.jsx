@@ -80,7 +80,7 @@ class EditPage extends Component{
           .then(data => console.log(data))
           .catch(err => console.log(err))
           
-          
+          alert('Contact has been updated')
           
 
 
