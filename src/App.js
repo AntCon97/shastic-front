@@ -11,9 +11,15 @@ class App extends Component{
     fetch('http://localhost:5000/api/v1/contacts')
     .then(response=>response.json())
 
-    .then(list => setContactsArr({ contacts: list.data}))
+    .then(list => setContactsArr({ contacts: list.data  }));
+
+
   
+
+
   };
+  
+  
   
 render(){
 
@@ -21,7 +27,8 @@ render(){
     return (
       
         <div className='app'>
-        
+    
+        {console.log(this.props.contacts)}
           <MainPage />
          
         </div>
@@ -31,7 +38,18 @@ render(){
 };
 
 const mapDispatchToProps = dispatch => ({
-  setContactsArr: arr => dispatch(setContactsArr(arr))
+  setContactsArr: arr => dispatch(setContactsArr(arr)),
+
 });
 
-export default connect(null, mapDispatchToProps)(App);
+const mapStateToProps = ( state ) => {
+  
+  return({
+   
+    contacts: state.mainpage.contacts.contacts,
+
+  })
+ 
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -7,7 +7,8 @@ export const MainpageActionTypes = {
     SET_DIS1_TO_DIS1: 'SET_DIS1_TO_DIS1',
     SET_DIS2_TO_DIS2: 'SET_DIS2_TO_DIS2',
     SET_DIS3_TO_DIS3: 'SET_DIS3_TO_DIS3',
-    SET_SEL_TO_ID: 'SET_SEL_TO_ID'
+    SET_SEL_TO_ID: 'SET_SEL_TO_ID',
+    SET_MAXPAGE_TO_NUM: 'SET_MAXPAGE_TO_NUM',
   
 }
 

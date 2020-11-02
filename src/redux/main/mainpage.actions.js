@@ -43,3 +43,7 @@ export const setSel = sel => ({
   type: MainpageActionTypes.SET_SEL_TO_ID,
   payload: sel
 })
+export const setMaxPage = num => ({
+  type: MainpageActionTypes.SET_MAXPAGE_TO_NUM,
+  payload: num
+})

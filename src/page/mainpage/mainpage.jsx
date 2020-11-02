@@ -11,7 +11,8 @@ import {setOBJ,
         setDis1, 
         setDis2, 
         setDis3,
-        setSel
+        setSel, 
+        setMaxPage
          } from './../../redux/main/mainpage.actions'
 import List from './../../components/list.component'
 
@@ -24,14 +25,18 @@ class MainPage extends Component{
    
     //putting the contact list on two different arrays for different pages
       componentDidUpdate(){
-        const { contacts, count, setDis2, setDis1, setCount,} = this.props;
+        const { contacts, count, setDis2, setDis1, setCount, setMaxPage} = this.props;
        let displays;
        let displays2;
-       
+       let num;
       
               
           if(contacts !== undefined && contacts.length === 30 && count < 2){
-         
+            num = contacts.length;
+            num = num / 20
+            num = Math.ceil(num)
+            setMaxPage({maxPage:  num})
+
            setCount({count: count + 1})
          
 
@@ -53,7 +58,7 @@ class MainPage extends Component{
 
 
       componentDidMount(){
-        const{ setCount, setPage, setSearch, setDis1, setSel, setOBJ} = this.props;
+        const{ setCount, setPage, setSearch, setDis1, setSel, setOBJ, setMaxPage} = this.props;
 
         setCount({count: 0})
         setPage({ pages: 1})
@@ -62,6 +67,7 @@ class MainPage extends Component{
         setDis1({display1: [{name: 'If youre seeing this', number: 'contacts didnt load from database'}]})
         setSel({sel: 0})
         setOBJ({id: -1})
+        setMaxPage({ maxPage: 0})
         
       }
       
@@ -82,7 +88,7 @@ class MainPage extends Component{
       onSubmit = e => {
         
         const {contacts, setOBJ, sel} = this.props;
-        console.log(sel)
+        
         if(sel<=31 && sel >= 1){
           setOBJ({ obj: 
             {id: contacts[sel - 1].id,
@@ -105,13 +111,14 @@ class MainPage extends Component{
         //decided to display page one or two 
        if( pages === 1 && searchField === '' && !obj ){
         return(
-          
+       <React.Fragment>
+       {console.log(this.props.maxPage)}
           <List  display={display1} 
                     
                   onSubmit={() => this.onSubmit()} 
                   linkClick1={this.linkClick1} 
                   linkClick2={this.linkClick2} />
-       
+     </React.Fragment>
         );
 
                   //deciding to display edit page
@@ -221,7 +228,10 @@ const mapStateToProps = ( state ) => {
     display2: state.mainpage.display2.display2,
     display1: state.mainpage.display1.display1,
     count: state.mainpage.count.count,
-    sel: state.mainpage.sel.sel
+    sel: state.mainpage.sel.sel,
+    maxPage: state.mainpage.maxPage.maxPage,
+    
+
 
 
   })
@@ -237,6 +247,7 @@ const mapDispatchToProps = dispatch => ({
   setDis2: display2 => dispatch(setDis2(display2)),
   setDis3: display3 => dispatch(setDis3(display3)),
   setSel: id => dispatch(setSel(id)), 
+  setMaxPage: num => dispatch(setMaxPage(num)),
  
 });
 

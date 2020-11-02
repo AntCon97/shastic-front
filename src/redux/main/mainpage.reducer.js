@@ -9,7 +9,8 @@ const INITIAL_STATE = {
     display2: [''],
     display3: [''],
     count: 0,
-    sel: -1
+    sel: -1,
+    maxPage: 0
   
 };
   
@@ -59,6 +60,11 @@ const INITIAL_STATE = {
           return{
             ...state,
             sel: action.payload
+          };
+          case MainpageActionTypes.SET_MAXPAGE_TO_NUM:
+          return{
+            ...state,
+            maxPage: action.payload
           };
       default:
         return state;
