@@ -9,7 +9,7 @@ import {setOBJ,
         setSearch, 
         setCount, 
         setDis1, 
-        setDis2, 
+      
         setDis3,
         setSel, 
         setMaxPage
@@ -25,33 +25,28 @@ class MainPage extends Component{
    
     //putting the contact list on two different arrays for different pages
       componentDidUpdate(){
-        const { contacts, count, setDis2, setDis1, setCount, setMaxPage} = this.props;
-       let displays;
-       let displays2;
+        const { contacts, count, setCount, setMaxPage} = this.props;
+      
        let num;
       
               
-          if(contacts !== undefined && contacts.length === 30 && count < 2){
+          if(contacts !== undefined && contacts.length > 0 && count < 2){
             num = contacts.length;
             num = num / 20
-            num = Math.ceil(num)
-            setMaxPage({maxPage:  num})
-
+            num = Math.ceil(num) 
+            setMaxPage({maxPage:  Array.from({length: num}, (_, i) => i + 1)})
+            
            setCount({count: count + 1})
          
 
-            displays =  contacts.filter(function (e) {
-              
-              return e.id <= 20;
-                 })
-                 displays2 =  contacts.filter(function (e) {
-              
-                  return e.id >= 21;
-                     })
+           let display = contacts.filter(function (e) {
+            return e.id <= 20;
+               })
+  
+  
+               this.props.setDis1({display1: [ ...display] })
                  
-                 
-            setDis1({display1: [ ...displays]})
-            setDis2({display2: [...displays2]})
+
             
         } 
       }
@@ -67,22 +62,11 @@ class MainPage extends Component{
         setDis1({display1: [{name: 'If youre seeing this', number: 'contacts didnt load from database'}]})
         setSel({sel: 0})
         setOBJ({id: -1})
-        setMaxPage({ maxPage: 0})
+        setMaxPage({ maxPage: ['']})
         
       }
       
-      //changes display based on page count
 
-      linkClick1 = e =>{
-        this.props.setPage({ pages: 1})
-      }
-
-
-      linkClick2 = e =>{
-        
-        this.props.setPage({ pages: 2})
-        
-      }
 
       // Makes each item in list a button that you can click 
       onSubmit = e => {
@@ -104,21 +88,20 @@ class MainPage extends Component{
 
       //destructuring 
      
-       const { contacts, obj, display1, display2, display3, searchField, pages} = this.props
+       const { contacts, obj, display1, display2, display3, searchField, maxPage} = this.props
        
         
     
         //decided to display page one or two 
-       if( pages === 1 && searchField === '' && !obj ){
+       if( maxPage !== undefined && searchField === '' && !obj ){
         return(
-       <React.Fragment>
-       {console.log(this.props.maxPage)}
-          <List  display={display1} 
-                    
+      
+          <List  
+          display={display1} 
+                    maxPage={maxPage}
                   onSubmit={() => this.onSubmit()} 
-                  linkClick1={this.linkClick1} 
-                  linkClick2={this.linkClick2} />
-     </React.Fragment>
+               />
+  
         );
 
                   //deciding to display edit page
@@ -137,14 +120,13 @@ class MainPage extends Component{
 
 
 
-      }else if(pages === 2 && display2 !== null  && searchField === ''  && !obj){
+      }else if( maxPage !== undefined  && display2 !== null  && searchField === ''  && !obj){
         return (
 
             <List  display={display2} 
-                     
+                     maxPage={maxPage}
                     onSubmit={() => this.onSubmit()} 
-                    linkClick1={this.linkClick1} 
-                    linkClick2={this.linkClick2} />
+                     />
     
         )
 
@@ -159,8 +141,7 @@ class MainPage extends Component{
             <List  display={display3} 
                      
                     onSubmit={() => this.onSubmit()} 
-                    linkClick1={this.linkClick1} 
-                    linkClick2={this.linkClick2} />
+                    />
         
         )
       }else {
@@ -187,23 +168,7 @@ class MainPage extends Component{
             </ul>
               
           <div className='links'>
-            <Link
-                component="button"
-                variant="body2"
-                onClick={this.linkClick1}
-              
-            >
-              <p className='bl'>1</p>
-            </Link>
-            |
-            <Link
-                component="button"
-                variant="body2"
-                onClick={this.linkClick2}
-                
-            >
-              <p className='bl'>2</p>
-            </Link>
+         
           </div>
           
         </div>
@@ -225,7 +190,7 @@ const mapStateToProps = ( state ) => {
     pages: state.mainpage.pages.pages,
     display3: state.mainpage.display3.display3,
     searchField: state.mainpage.searchField.searchField,
-    display2: state.mainpage.display2.display2,
+    
     display1: state.mainpage.display1.display1,
     count: state.mainpage.count.count,
     sel: state.mainpage.sel.sel,
@@ -244,7 +209,6 @@ const mapDispatchToProps = dispatch => ({
   setSearch: search => dispatch(setSearch(search)),
   setCount: count => dispatch(setCount(count)),
   setDis1: display1 => dispatch(setDis1(display1)),
-  setDis2: display2 => dispatch(setDis2(display2)),
   setDis3: display3 => dispatch(setDis3(display3)),
   setSel: id => dispatch(setSel(id)), 
   setMaxPage: num => dispatch(setMaxPage(num)),

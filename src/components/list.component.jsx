@@ -3,7 +3,7 @@ import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 import { connect } from 'react-redux';
-import {setSel, setDis3, setSearch} from './../redux/main/mainpage.actions'
+import {setSel, setDis3, setSearch, setDis1, } from './../redux/main/mainpage.actions'
 
 
 
@@ -16,7 +16,24 @@ class List extends Component{
       
       componentDidUpdate(){
         this.props.onSubmit()
+        
       }
+
+      onLinkClick= e => {
+        
+        let min =(e - 1) * 20
+        let max = min + 20;
+        
+        let display = this.props.contacts.filter(function (e) {
+          return e.id >= min && e.id <= max;
+             })
+
+
+             this.props.setDis1({display1: [ ...display] })
+
+      }
+
+     
           // saving input to state and displaying search reasults 
           handleChange = e => {
             const { contacts, setDis3, setSearch, searchField } = this.props
@@ -44,7 +61,7 @@ class List extends Component{
       
         <ul>
         <span className='warning'>Search Bar is Case Sensitive</span>
-         {this.props.display.map(x=>(
+         {this.props.display1.map(x=>(
       <li>
         <Button key={x._id} onClick={() => {
             this.onClicks(x.id)
@@ -57,7 +74,23 @@ class List extends Component{
         </ul>
           
       <div className='links'>
-        <Link
+
+          {this.props.maxPage.map(x=>(
+            
+            <Link
+            key={x}
+            component="button"
+            variant="body2"
+            onClick={() => {
+            this.onLinkClick(x)
+        }}
+          
+        >
+          <p className='bl'> {x} </p>
+        </Link>
+        
+          ))}
+        {/* <Link
             component="button"
             variant="body2"
             onClick={this.props.linkClick1}
@@ -73,7 +106,7 @@ class List extends Component{
             
         >
           <p className='bl'>2</p>
-        </Link>
+        </Link> */}
       </div>
      
     </div>
@@ -84,6 +117,7 @@ const mapDispatchToProps = dispatch => ({
     setSel: id => dispatch(setSel(id)), 
     setDis3: display3 => dispatch(setDis3(display3)),
     setSearch: search => dispatch(setSearch(search)),
+    setDis1: display1 => dispatch(setDis1(display1)),
 
 
    
@@ -95,6 +129,8 @@ const mapDispatchToProps = dispatch => ({
       contacts: state.mainpage.contacts.contacts,
       display3: state.mainpage.display3.display3,
       searchField: state.mainpage.searchField.searchField,
+      maxPage: state.mainpage.maxPage.maxPage,
+      display1: state.mainpage.display1.display1,
     })
    
   }

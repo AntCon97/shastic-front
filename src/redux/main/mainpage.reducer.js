@@ -6,11 +6,11 @@ const INITIAL_STATE = {
     searchField: '',
     pages: 1,
     display1: [''],
-    display2: [''],
+
     display3: [''],
     count: 0,
     sel: -1,
-    maxPage: 0
+    maxPage: ['']
   
 };
   
@@ -46,11 +46,7 @@ const INITIAL_STATE = {
             ...state,
             display1: action.payload
           };
-          case MainpageActionTypes.SET_DIS2_TO_DIS2:
-          return{
-            ...state,
-            display2: action.payload
-          };
+         
           case MainpageActionTypes.SET_DIS3_TO_DIS3:
           return{
             ...state,
@@ -61,7 +57,7 @@ const INITIAL_STATE = {
             ...state,
             sel: action.payload
           };
-          case MainpageActionTypes.SET_MAXPAGE_TO_NUM:
+          case MainpageActionTypes.SET_MAXPAGE_TO_ARR:
           return{
             ...state,
             maxPage: action.payload

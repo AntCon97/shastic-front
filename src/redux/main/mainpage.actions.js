@@ -29,10 +29,7 @@ export const setDis1 = dis1 => ({
   payload: dis1
 })
 
-export const setDis2 = dis2 => ({
-  type: MainpageActionTypes.SET_DIS2_TO_DIS2,
-  payload: dis2
-})
+
 
 export const setDis3 = dis3 => ({
   type: MainpageActionTypes.SET_DIS3_TO_DIS3,
@@ -43,7 +40,7 @@ export const setSel = sel => ({
   type: MainpageActionTypes.SET_SEL_TO_ID,
   payload: sel
 })
-export const setMaxPage = num => ({
-  type: MainpageActionTypes.SET_MAXPAGE_TO_NUM,
-  payload: num
+export const setMaxPage = arr => ({
+  type: MainpageActionTypes.SET_MAXPAGE_TO_ARR,
+  payload: arr
 })
