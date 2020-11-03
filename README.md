@@ -1,19 +1,17 @@
 ##Documentation 
 
-This project could be much better and much more dynamic if the page count was dependent on 
-the amount of items in the contact list, also if you could add or delete from list. 
+This project is a contacts list web application utilizing react/redux front end and node js noSQL db back end. 
 
-I didnt include the adding or deleting from the list, although it wouldnt be difficult to implement in the back end.
+TODO: add ability to add/delete contacts / address (optional) to contact
 
-The back end is made of NodeJs and express server with a noSQL mongo DB. 
+currently the list is set at a fixed size due to not being able to add/delete in the back end which i will add soon,
 
-The front end utilizes some redux which i added for the instructions. When i saw that redux was removed from the requirements, i did
-whats left in local sake for ease of use. If the the application was bigger to make it more scalable it would be mostly redux. 
+currently it displays 20 contacts per page with links to next page at bottom
+links at bottom of page are dynamic based on size of contacts list,
 
-The main file `MainPage.jsx` could be much smaller and cleaner if it was broken up into components to display the different lists 
-although it wasnt included due to time restraints. 
+you can click on a contact to change the name/number of said contact
 
-The tests are terrible because i am unfimilar with testing in react, i appoligize for that. 
+currently no tests but comming soon
 
 The docker file should be formated correctly. 
 

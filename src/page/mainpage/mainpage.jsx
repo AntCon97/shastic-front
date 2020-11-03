@@ -1,7 +1,5 @@
 import React, { Component } from "react"
 import Input from '@material-ui/core/Input';
-import Link from '@material-ui/core/Link';
-
 import EditPage from './../editpage/editpage'
 import { connect } from 'react-redux';
 import {setOBJ, 
