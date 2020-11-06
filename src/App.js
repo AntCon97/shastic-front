@@ -1,23 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setContactsArr } from './redux/main/mainpage.actions'
+import { setContactsArr, setId } from './redux/main/mainpage.actions'
+import { Route, Switch } from 'react-router-dom'
 
 import MainPage from './page/mainpage/mainpage'
+import CreatePage from './page/createpage/createpage'
 
 class App extends Component{
  
   componentDidMount() {
-    const { setContactsArr } = this.props;
+    const { setContactsArr} = this.props;
     fetch('http://localhost:5000/api/v1/contacts')
     .then(response=>response.json())
 
     .then(list => setContactsArr({ contacts: list.data  }));
 
-
-  
-
-
   };
+
+  componentDidUpdate(){
+    const {contacts, setId } = this.props;
+    if(contacts !== undefined){
+      let num = contacts.length;
+      num = num + 1;
+      setId({id: num})
+   
+    }
+  }
   
   
   
@@ -28,9 +36,10 @@ render(){
       
         <div className='app'>
     
-        {console.log(this.props.contacts)}
-          <MainPage />
-         
+          <Switch>
+            <Route exact path='/' component={MainPage} />
+            <Route path='/create' component={CreatePage} />
+          </Switch>
         </div>
    
     );
@@ -39,6 +48,7 @@ render(){
 
 const mapDispatchToProps = dispatch => ({
   setContactsArr: arr => dispatch(setContactsArr(arr)),
+  setId: num => dispatch(setId(num))
 
 });
 
@@ -47,6 +57,7 @@ const mapStateToProps = ( state ) => {
   return({
    
     contacts: state.mainpage.contacts.contacts,
+  
 
   })
  

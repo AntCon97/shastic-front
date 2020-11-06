@@ -44,3 +44,8 @@ export const setMaxPage = arr => ({
   type: MainpageActionTypes.SET_MAXPAGE_TO_ARR,
   payload: arr
 })
+
+export const setId = num => ({
+  type: MainpageActionTypes.SET_ID_TO_NUM,
+  payload: num
+})

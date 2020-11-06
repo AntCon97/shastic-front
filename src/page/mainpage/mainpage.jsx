@@ -13,7 +13,7 @@ import {setOBJ,
         setMaxPage
          } from './../../redux/main/mainpage.actions'
 import List from './../../components/list.component'
-
+import {Link } from 'react-router-dom'
 import './mainpage.css'
 
 class MainPage extends Component{
@@ -21,7 +21,7 @@ class MainPage extends Component{
 
       
    
-    //putting the contact list on two different arrays for different pages
+  
       componentDidUpdate(){
         const { contacts, count, setCount, setMaxPage} = this.props;
       
@@ -51,7 +51,7 @@ class MainPage extends Component{
 
 
       componentDidMount(){
-        const{ setCount, setPage, setSearch, setDis1, setSel, setOBJ, setMaxPage} = this.props;
+        const{ setCount, setPage, setSearch, setDis1, setSel, setMaxPage} = this.props;
 
         setCount({count: 0})
         setPage({ pages: 1})
@@ -59,9 +59,9 @@ class MainPage extends Component{
         
         setDis1({display1: [{name: 'If youre seeing this', number: 'contacts didnt load from database'}]})
         setSel({sel: 0})
-        setOBJ({id: -1})
-        setMaxPage({ maxPage: ['']})
         
+        setMaxPage({ maxPage: ['']})
+       
       }
       
 
@@ -93,13 +93,14 @@ class MainPage extends Component{
         //decided to display page one or two 
        if( maxPage !== undefined && searchField === '' && !obj ){
         return(
-      
-          <List  
-          display={display1} 
-                    maxPage={maxPage}
-                  onSubmit={() => this.onSubmit()} 
-               />
-  
+          <div>
+            <List  
+            display={display1} 
+                      maxPage={maxPage}
+                    onSubmit={() => this.onSubmit()} 
+                />
+            <Link to='/create'> Create New</Link>
+           </div>
         );
 
                   //deciding to display edit page
@@ -110,7 +111,7 @@ class MainPage extends Component{
         return(
           <div>
 
-          <EditPage />
+            <EditPage />
           </div>
         )
 

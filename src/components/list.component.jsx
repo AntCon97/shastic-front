@@ -52,6 +52,7 @@ class List extends Component{
     return(
       <div className='main'>
       <h1>Contact Libary</h1>
+      
       <Input 
           className='searchBar'
           type='search'
@@ -90,23 +91,7 @@ class List extends Component{
         </Link>
         
           ))}
-        {/* <Link
-            component="button"
-            variant="body2"
-            onClick={this.props.linkClick1}
-          
-        >
-          <p className='bl'>1</p>
-        </Link>
-        |
-        <Link
-            component="button"
-            variant="body2"
-            onClick={this.props.linkClick2}
-            
-        >
-          <p className='bl'>2</p>
-        </Link> */}
+
       </div>
      
     </div>

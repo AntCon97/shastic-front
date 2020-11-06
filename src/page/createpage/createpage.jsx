@@ -3,16 +3,10 @@ import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { connect } from 'react-redux';
-import {setOBJ } from './../../redux/main/mainpage.actions'
-import './editpage.css'
+import {Link } from 'react-router-dom'
 
 
-
-
-
-
-
-class EditPage extends Component{
+class CreatePage extends Component{
 
     constructor(){
         super();
@@ -20,24 +14,20 @@ class EditPage extends Component{
             name: '',
             num: '',
             data: {},
-            count: 0
+            count: 0,
+            message: ''
 
         }
       }
 
       componentDidUpdate(){
           const {count, num, name, } = this.state
-          if(count < num.length || count < name.length){
+          if(count < (num.length + name.length)){
               this.setState({count: count + 1})
-              
-              if(name !== '' && num === ''){
-                 
-                  this.setState({ data: {name: this.state.name}})
-              }else if(num !== '' && name === ''){
-                  
-                  this.setState({ data: {number: this.state.num}})
-              }else if(num!== '' && name !== ''){
-                  this.setState({data: {name: this.state.name, number: this.state.num}})
+              console.log(name)
+              console.log(num)
+              if(num!== '' && name !== ''){
+                  this.setState({data: {name: this.state.name, number: this.state.num, id: this.props.id}})
               }
               
           }
@@ -45,8 +35,7 @@ class EditPage extends Component{
    
    handleBack = e => {
        
-        setOBJ({ odj: undefined
-        })
+        
         window.location.reload();
     }
     
@@ -62,18 +51,21 @@ class EditPage extends Component{
       }
 
       handleSubmit = e => {
-       
+        const {num, name, } = this.state
         
-        const { obj } = this.props
-        
-
-       
+      if(num === '' && name === ''){
+          alert('Please enter a name and number')
+      }else if(num === ''){
+          alert('Please enter a valid num')
+      }else if(name === ''){
+          alert('Please enter a valid name')
+      }else{
         
         this.setState({count: this.state.count + 1})
 
-     const putMethod = {
+     const postMethod = {
          
-          method: 'PUT', 
+          method: 'POST', 
           headers: {
            'Content-type': 'application/json; charset=UTF-8' 
           },
@@ -81,24 +73,23 @@ class EditPage extends Component{
          }
          
         
-         fetch('http://localhost:5000/api/v1/contacts/' + obj._id, putMethod)
+         fetch('http://localhost:5000/api/v1/contacts/', postMethod)
           .then(response => response.json())
         
           .catch(err => console.log(err))
           
-          alert('Contact has been updated')
-          
+      }   
 
 
 
       }
     render(){
-        const { obj } = this.props
+        
        
     return(
     <div className='edits'>
-        <h1>Edit Entry </h1>
-        <div className='curr'>{obj.id} | {obj.name} | {obj.number} </div>
+        <h1>Create Contact </h1>
+     
 
         <div>
             <Input 
@@ -121,7 +112,7 @@ class EditPage extends Component{
         <div className='btnGrp'>
 
         <ButtonGroup  aria-label="outlined primary button group">
-            <Button onClick={() => this.handleBack()}>Back</Button>
+           <Link to='/'> Back</Link>
             <Button onClick={() => this.handleSubmit()} ref={input => this.inputElement = input}>Submit</Button>
             
         </ButtonGroup>
@@ -137,9 +128,9 @@ class EditPage extends Component{
 const mapStateToProps = ( state ) => {
   
     return({
+        id: state.mainpage.id.id,
       
-      obj: state.mainpage.obj.obj,
     })
 }
 
-export default connect(mapStateToProps)(EditPage);
+export default connect(mapStateToProps)(CreatePage);

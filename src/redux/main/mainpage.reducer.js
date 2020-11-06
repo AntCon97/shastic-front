@@ -6,7 +6,7 @@ const INITIAL_STATE = {
     searchField: '',
     pages: 1,
     display1: [''],
-
+    id: 0,
     display3: [''],
     count: 0,
     sel: -1,
@@ -61,6 +61,11 @@ const INITIAL_STATE = {
           return{
             ...state,
             maxPage: action.payload
+          };
+          case MainpageActionTypes.SET_ID_TO_NUM:
+          return{
+            ...state,
+            id: action.payload
           };
       default:
         return state;
