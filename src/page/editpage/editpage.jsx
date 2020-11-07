@@ -1,145 +1,116 @@
-import React, { Component } from "react"
+import React, { Component } from 'react';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { connect } from 'react-redux';
-import {setOBJ } from './../../redux/main/mainpage.actions'
-import './editpage.css'
+import { setOBJ } from './../../redux/main/mainpage.actions';
+import './editpage.css';
 
+class EditPage extends Component {
+  constructor() {
+    super();
+    this.state = {
+      name: '',
+      num: '',
+      data: {},
+      count: 0,
+    };
+  }
 
+  componentDidUpdate() {
+    const { count, num, name } = this.state;
+    if (count < num.length || count < name.length) {
+      this.setState({ count: count + 1 });
 
-
-
-
-
-class EditPage extends Component{
-
-    constructor(){
-        super();
-        this.state = {
-            name: '',
-            num: '',
-            data: {},
-            count: 0
-
-        }
+      if (name !== '' && num === '') {
+        this.setState({ data: { name: this.state.name } });
+      } else if (num !== '' && name === '') {
+        this.setState({ data: { number: this.state.num } });
+      } else if (num !== '' && name !== '') {
+        this.setState({
+          data: { name: this.state.name, number: this.state.num },
+        });
       }
-
-      componentDidUpdate(){
-          const {count, num, name, } = this.state
-          if(count < num.length || count < name.length){
-              this.setState({count: count + 1})
-              
-              if(name !== '' && num === ''){
-                 
-                  this.setState({ data: {name: this.state.name}})
-              }else if(num !== '' && name === ''){
-                  
-                  this.setState({ data: {number: this.state.num}})
-              }else if(num!== '' && name !== ''){
-                  this.setState({data: {name: this.state.name, number: this.state.num}})
-              }
-              
-          }
     }
-   
-   handleBack = e => {
-       
-        setOBJ({ odj: undefined
-        })
-        window.location.reload();
-    }
-    
-    
+  }
 
- 
-     handleChange1 = e => {
-        this.setState({ name: e.target.value });
-        
-      }
-      handleChange2 = e => {
-          this.setState({num: e.target.value})
-      }
+  handleBack = (e) => {
+    setOBJ({ odj: undefined });
+    window.location.reload();
+  };
 
-      handleSubmit = e => {
-       
-        
-        const { obj } = this.props
-        
+  handleChange1 = (e) => {
+    this.setState({ name: e.target.value });
+  };
+  handleChange2 = (e) => {
+    this.setState({ num: e.target.value });
+  };
 
-       
-        
-        this.setState({count: this.state.count + 1})
+  handleSubmit = (e) => {
+    const { obj } = this.props;
 
-     const putMethod = {
-         
-          method: 'PUT', 
-          headers: {
-           'Content-type': 'application/json; charset=UTF-8' 
-          },
-          body: JSON.stringify(this.state.data)
-         }
-         
-        
-         fetch('http://localhost:5000/api/v1/contacts/' + obj._id, putMethod)
-          .then(response => response.json())
-        
-          .catch(err => console.log(err))
-          
-          alert('Contact has been updated')
-          
+    this.setState({ count: this.state.count + 1 });
 
+    const putMethod = {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify(this.state.data),
+    };
 
+    fetch('http://localhost:5000/api/v1/contacts/' + obj._id, putMethod)
+      .then((response) => response.json())
 
-      }
-    render(){
-        const { obj } = this.props
-       
-    return(
-    <div className='edits'>
+      .catch((err) => console.log(err));
+
+    alert('Contact has been updated');
+  };
+  render() {
+    const { obj } = this.props;
+
+    return (
+      <div className='edits'>
         <h1>Edit Entry </h1>
-        <div className='curr'>{obj.id} | {obj.name} | {obj.number} </div>
+        <div className='curr'>
+          {obj.id} | {obj.name} | {obj.number}{' '}
+        </div>
 
         <div>
-            <Input 
-                        className='search1'
-                        type='search'
-                        placeholder='New Name Here'
-                        onChange={this.handleChange1}
-                        
-                       
-                     
-                    />
-            <Input 
-                        className='search'
-                        type='search'
-                        placeholder='New Number Here'
-                        onChange={this.handleChange2}
-                    />
+          <Input
+            className='search1'
+            type='search'
+            placeholder='New Name Here'
+            onChange={this.handleChange1}
+          />
+          <Input
+            className='search'
+            type='search'
+            placeholder='New Number Here'
+            onChange={this.handleChange2}
+          />
         </div>
-            
+
         <div className='btnGrp'>
-
-        <ButtonGroup  aria-label="outlined primary button group">
+          <ButtonGroup aria-label='outlined primary button group'>
             <Button onClick={() => this.handleBack()}>Back</Button>
-            <Button onClick={() => this.handleSubmit()} ref={input => this.inputElement = input}>Submit</Button>
-            
-        </ButtonGroup>
+            <Button
+              onClick={() => this.handleSubmit()}
+              ref={(input) => (this.inputElement = input)}
+            >
+              Submit
+            </Button>
+          </ButtonGroup>
         </div>
-
-
-    </div>
-    )
+      </div>
+    );
   }
 }
 
-
-const mapStateToProps = ( state ) => {
-  
-    return({
-      
-      obj: state.mainpage.obj.obj,
-    })
-}
+const mapStateToProps = (state) => {
+  return {
+    obj: state.mainpage.obj.obj,
+  };
+};
 
 export default connect(mapStateToProps)(EditPage);
