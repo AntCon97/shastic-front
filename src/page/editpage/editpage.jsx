@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { connect } from 'react-redux';
 import { setOBJ } from './../../redux/main/mainpage.actions';
+
 import './editpage.css';
 
 class EditPage extends Component {
@@ -36,7 +37,7 @@ class EditPage extends Component {
 
   handleBack = (e) => {
     setOBJ({ odj: undefined });
-    window.location.reload();
+    this.reload();
   };
 
   handleChange1 = (e) => {
@@ -65,7 +66,34 @@ class EditPage extends Component {
       .catch((err) => console.log(err));
 
     alert('Contact has been updated');
+    this.reload();
   };
+
+  handleDelete = (e) => {
+    const { obj } = this.props;
+
+    this.setState({ count: this.state.count + 1 });
+
+    const putMethod = {
+      method: 'Delete',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    };
+
+    fetch('http://localhost:5000/api/v1/contacts/' + obj._id, putMethod)
+      .then((response) => response.json())
+
+      .catch((err) => console.log(err));
+
+    alert('Contact has been Deleted');
+    this.reload();
+  };
+
+  reload = () => {
+    window.location.reload();
+  };
+
   render() {
     const { obj } = this.props;
 
@@ -99,6 +127,12 @@ class EditPage extends Component {
               ref={(input) => (this.inputElement = input)}
             >
               Submit
+            </Button>
+            <Button
+              onClick={() => this.handleDelete()}
+              ref={(input) => (this.inputElement = input)}
+            >
+              Delete
             </Button>
           </ButtonGroup>
         </div>
