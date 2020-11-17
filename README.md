@@ -13,8 +13,3 @@ You can also delete said contact or click on create new to add a contact to the 
 currently no tests but comming soon
 
 The docker file should be formated correctly. 
-
-To properly use this you need the database key which will be sent in the email along with the links to the front/back end of this project
-to kimberly.
-
-You have to put it in config.env file of the nodejs server
